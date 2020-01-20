@@ -1,19 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MateuszSliwkaLab7.Models;
-using MateuszSliwkaLab7.Services;
+using MateuszSliwkaLab7ZadDom.Models;
+using MateuszSliwkaLab7ZadDom.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
-namespace MateuszSliwkaLab7
+namespace MateuszSliwkaLab7ZadDom
 {
     public class Startup
     {
@@ -27,7 +20,7 @@ namespace MateuszSliwkaLab7
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-          
+            services.AddDbContext<DrivingSchoolContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DrivingSchoolContext")));
             services.AddSingleton<IService<Car>, CarService<Car>>();
             services.AddSingleton<IService<Instructor>, InstructorService<Instructor>>();
             services.AddControllers();
