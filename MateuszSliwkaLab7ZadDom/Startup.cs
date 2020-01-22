@@ -2,6 +2,7 @@ using MateuszSliwkaLab7ZadDom.Models;
 using MateuszSliwkaLab7ZadDom.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,8 +22,8 @@ namespace MateuszSliwkaLab7ZadDom
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DrivingSchoolContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DrivingSchoolContext")));
-            services.AddSingleton<IService<Car>, CarService<Car>>();
-            services.AddSingleton<IService<Instructor>, InstructorService<Instructor>>();
+            services.AddSingleton<ICarService, CarService<Car>>();
+            services.AddSingleton<IInstructorService, InstructorService<Instructor>>();
             services.AddControllers();
         }
 

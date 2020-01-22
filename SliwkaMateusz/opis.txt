@@ -1,0 +1,1 @@
+Aplikacja Web Api napisana przy uzyciu .NET Core oraz Entity Framework i bazy MSSql. Program obsluguje żądania typu post/put/delete/get i manipuluje zawartością bazy danych na przykładzie samochodów oraz pracowników/instruktorów. 

@@ -2,79 +2,58 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MateuszSliwkaLab7ZadDom.Models;
+using MateuszSliwkaLab7ZadDom.Services;
 using Microsoft.AspNetCore.Mvc;
-using MateuszSliwkaLab7.Services;
-using MateuszSliwkaLab7.Models;
 
-namespace MateuszSliwkaLab7.Controllers
+
+namespace MateuszSliwkaLab7ZadDom.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CarController : ControllerBase
+    public class CarController : ControllerBase //kontroler klasy samochodu
     {
-        private IService<Car> carService;
+        private ICarService carService;
 
-        public CarController(IService<Car> _carService)
+        public CarController(ICarService _carService) //konstruktor kontrolera
         {
-            carService = _carService;
+            carService = _carService; //przypisanie do zmiennej serwisu
         }
       
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get() //obsluga zadania get
         {
-            var objects = carService.GetAll ();
-            return Ok(objects);
+      
+            return Ok(carService.GetAll()); //zwrocenie listy wszystkich samochodow
         }
         [HttpPost]
-        public IActionResult Post([FromBody] Car car)
+        public IActionResult Post([FromBody] Car car) //obsluga zadania post
         {
-            var id = carService.Post(car);
-            return Ok(id);
+            var id = carService.Post(car); //przypisanie do zmiennej id wyniku wstawiania obiektu samochodu do bazy
+            return Ok(id); //zwrocenie komunikatu razem z id wstawionego auta
         }
 
         [HttpPut]
         [Route("{id:int}")]
-        public IActionResult Put([FromBody] Car car, [FromRoute] int id)
+        public IActionResult Put([FromBody] Car car, [FromRoute] int id) //obsluga zadania put, zaktualizowania obiektu, id pobierane z uri
         {
-            if (id != car.Id)
-                return Conflict("Podales bledne ID");
+            var isUpdateSuccessful = carService.Put(car, id); //przypisanie do zmiennej wyniku aktualizacji obiektu
+            if (isUpdateSuccessful) //zwrocenie dwoch komuniaktow w zalznosci od powodzenia aktualizacji
+                return NoContent();
             else
-            {
-                var isUpdateSuccessful = carService.Put(car, id);
-
-                if (isUpdateSuccessful)
-                {
-                    return NoContent();
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }
-
-                
-            
+                return NotFound();
         }
         [HttpDelete]
         [Route("{id:int}")]
-        public IActionResult Delete([FromRoute]int id)
+        public IActionResult Delete([FromRoute]int id) //obsluga 
         {
-          
-                var isDeleteSuccessful = carService.Delete(id);
+                var isDeleteSuccessful = carService.Delete(id); //to samo co w PUT
 
                 if (isDeleteSuccessful)
-                {
                     return NoContent();
-                }
                 else
-                {
                     return NotFound();
-                }
-            
-
-
-
         }
     }
 }
